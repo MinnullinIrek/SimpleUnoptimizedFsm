@@ -22,9 +22,9 @@ class FSM {
 
  public:
   /// adding states
-  template <typename StateType>
-  void addState() {
-    states[std::type_index(typeid(StateType))] = std::make_shared<StateType>();
+  template <typename StateType, typename... Args>
+  void addState(Args&&... args) {
+    states[std::type_index(typeid(StateType))] = std::make_shared<StateType>(std::forward<Args>(args)...);
   }
 
   /// setting start state
@@ -43,7 +43,7 @@ class FSM {
   template <typename FromState, typename ToState>
   void addTransition(Event event) {
     transitions[std::type_index(typeid(FromState))][event] = [this]() {
-      auto& fromState = currentState;
+      auto fromState = currentState;
       auto toStateIt = states.find(std::type_index(typeid(ToState)));
       if (toStateIt != states.end()) {
         fromState->onExit();
