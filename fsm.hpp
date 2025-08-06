@@ -2,6 +2,7 @@
 #include <unordered_map>
 #include <typeindex>
 #include <memory>
+#include <stdexcept>
 
 /// Base State class
 struct State {
