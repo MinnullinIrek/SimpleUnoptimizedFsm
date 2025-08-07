@@ -43,7 +43,7 @@ class FSM {
   template <typename FromState, typename ToState>
   void addTransition(Event event) {
     transitions[std::type_index(typeid(FromState))][event] = [this]() {
-      auto fromState = currentState;
+      auto& fromState = currentState;
       auto toStateIt = states.find(std::type_index(typeid(ToState)));
       if (toStateIt != states.end()) {
         fromState->onExit();
